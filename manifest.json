@@ -1,0 +1,14 @@
+{
+  "manifest_v ersion": 2,
+  "name": "NTFLX Auto-Skip",
+  "version": "0.1",
+
+  "description": "Provides some options when watching Netflix, such as skipping the intro or summary of an episode.",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.netflix.com/watch/*"],
+      "js": ["src/ntflx_auto_skip.js"]
+    }
+  ]
+}
