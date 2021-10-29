@@ -1,44 +1,81 @@
+const DATA_VIDEO = "[data-uia=watch-video]";
 const DATA_PLAYER = "[data-uia=player]";
 const DATA_RECAP = "[data-uia=player-skip-recap]";
+const DATA_INTRO = "[data-uia=player-skip-intro]";
+const DATA_NEXT = "[data-uia=next-episode-seamless-button]";
+const DATA_NEXT_DRAINING = "[data-uia=next-episode-seamless-button-draining]";
 
-let ntflx_player, ntflx_player_obs;
+console.log("Start ext NTFLX_AUTO_SKIP");
 
-// Click a button if exists
-let ntflx_item_click = function(ntflx_item, data) {
-    ntflx_item = $(data);
+let ntflx_player, ntflx_player_obs, ntflx_video, ntflx_video_obs;
+let ntflx_obs_options = { childList: true };
+
+// Click a button if exists | TODO make it a boolean?
+let ntflx_item_click = function(data) {
+    let ntflx_item = document.querySelector(data);
     if (ntflx_item) {
         console.log(ntflx_item.dataset.uia, "exists and trigger click");
         ntflx_item.click();
     } 
 }
 
+// Tries to click any button
+let try_click = function() {
+    ntflx_item_click(DATA_RECAP);
+    ntflx_item_click(DATA_RECAP);
+    ntflx_item_click(DATA_NEXT);
+    ntflx_item_click(DATA_NEXT_DRAINING);
+}
+
 let ntflx_skip = () => {
-    let recap, intro, next;
+    // Try to click a button if exists when a node is added to the player  
+    ntflx_player_obs = new MutationObserver(() => { try_click(); });
 
-    ntflx_player_obs = new MutationObserver(function (mutationRecord) {
-        // With my options, mutationRecord.length should always be = to 1
-        mutationRecord.forEach(() => {
-            ntflx_item_click(recap, DATA_RECAP);
-        });
-    });
-
-    let ntflx_player_obs_options = {
-        childList: true,
-        attributes: false
-    };
-
-    ntflx_player_obs.observe(ntflx_player, ntflx_player_obs_options);
+    // in case a button loaded with the player (so no mutation is observed in this case)
+    try_click();
+    ntflx_player_obs.observe(ntflx_player, ntflx_obs_options);
 };
 
-// The player usually takes some times to load, like 2 seconds
-let loadplayer = setInterval(() => {
-    ntflx_player = $(DATA_PLAYER);
+// The player usually takes some times to load, like 2 seconds on my end
+let loadplayer = () => { 
+    ntflx_player = document.querySelector(DATA_PLAYER);
     if (ntflx_player) {
         console.log("player exists");
-        clearInterval(loadplayer);
         ntflx_skip();
+    } else {
+        setTimeout(loadplayer, 1000);
     }
-}, 1000);
- 
-// TODO : ntflx_player_obs.disconnect(); 
-// Might never disconnect as one can watch several episodes without having the page to reload, and there are buttons in the beginning as well at the end of each episodes.
+};
+
+let firstload = true;
+
+let loadvideo = () => {
+    console.log("START LOADVIDEO INTERVAL");
+    ntflx_video = document.querySelector(DATA_VIDEO);
+    if (ntflx_video) {
+        console.log("watch-video ready");
+        ntflx_video_obs = new MutationObserver(() => {
+            console.log("WATCH-VIDEO MUTATION");
+            ntflx_player = document.querySelector(DATA_PLAYER);
+            if (!ntflx_player) {
+                if (ntflx_player_obs) {
+                    console.log("disconnect");
+                    ntflx_player_obs.disconnect();
+                    ntflx_player_obs = null;
+                }
+                loadplayer();
+            } else if (ntflx_player && firstload) {
+                // in case player already instantiated before setting a mutationObs on it
+                loadplayer();
+                firstload = false;
+            }
+        });
+
+        ntflx_video_obs.observe(ntflx_video, ntflx_obs_options);
+        clearInterval(loadvideo);
+    } else {
+        setTimeout(loadvideo, 100);
+    }
+};
+
+loadvideo();

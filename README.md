@@ -9,9 +9,9 @@ NTFLX Auto-skip is a Firefox extension that offers some options when watching Ne
 
 I set myself the following goals as a starting point before starting the process of understanding. Since I'm starting from scratch without really knowing what's going on under the hood, my first step will consist to understand how it works then to come up with a solution in order to achieve one of the goals below. Therefore, I may not be able to achieve some of these goals during the time I have set for this project. 
 
-- [ ] Skip the introductions 
+- [x] Skip the introductions 
 - [x] Skip the summaries 
-- [ ] Instantly play the next episode 
+- [x] Instantly play the next episode 
 - [ ] Ignore the "Are you still watching?" message
 - [ ] Allow the user to de.activate any of the features above 
 
