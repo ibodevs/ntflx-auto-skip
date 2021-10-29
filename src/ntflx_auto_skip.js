@@ -70,9 +70,9 @@ let loadvideo = () => {
                 firstload = false;
             }
         });
+        
+        ntflx_video_obs.observe(ntflx_video, ntflx_obs_options); 
 
-        ntflx_video_obs.observe(ntflx_video, ntflx_obs_options);
-        clearInterval(loadvideo);
     } else {
         setTimeout(loadvideo, 100);
     }
