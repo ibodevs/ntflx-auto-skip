@@ -1,0 +1,47 @@
+body {
+    background-color: #fff;
+    /* border-radius: 4px; */
+    /* box-shadow: 1px 1px 2px 1px #131313; */
+    color: #273e56;
+    padding: 2vh 2vw;
+}
+
+#ntflx_icon {
+    width: 42px;
+}
+
+a, a:link, a:visited, a:active {
+    text-decoration: none;
+    color: green;
+    font-weight: bold;
+}
+
+a:hover {
+    color: greenyellow;
+}
+
+.ntflx_container {
+    border: 1px solid #aaa;
+}
+
+.ntflx_option_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.ntflx_options_h {
+    color: #677e96;
+}
+
+.ntflx_options {
+    color: #273e56;
+}
+
+.center {
+    text-align: center;
+}
+
+main {
+    margin: 5vh 0;
+}
