@@ -32,4 +32,4 @@ What are the custom data (they chose to name it data-uia) name for each button?
 - Summary : `player-skip-recap`
 - Intro : `player-skip-intro`
 - Next episode : `next-episode-seamless-button` or `next-episode-seamless-button-draining` when animated
-- Still watching : ` `
+- Still watching : `interrupt-autoplay-continue`

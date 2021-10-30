@@ -4,6 +4,7 @@ const DATA_RECAP = "[data-uia=player-skip-recap]";
 const DATA_INTRO = "[data-uia=player-skip-intro]";
 const DATA_NEXT = "[data-uia=next-episode-seamless-button]";
 const DATA_NEXT_DRAINING = "[data-uia=next-episode-seamless-button-draining]";
+const DATA_STILL = "[data-uia=interrupt-autoplay-continue]";
 
 console.log("Start ext NTFLX_AUTO_SKIP");
 
@@ -22,9 +23,10 @@ let ntflx_item_click = function(data) {
 // Tries to click any button
 let try_click = function() {
     ntflx_item_click(DATA_RECAP);
-    ntflx_item_click(DATA_RECAP);
+    ntflx_item_click(DATA_INTRO);
     ntflx_item_click(DATA_NEXT);
     ntflx_item_click(DATA_NEXT_DRAINING);
+    ntflx_item_click(DATA_STILL);
 }
 
 let ntflx_skip = () => {

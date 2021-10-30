@@ -12,7 +12,7 @@ I set myself the following goals as a starting point before starting the process
 - [x] Skip the introductions 
 - [x] Skip the summaries 
 - [x] Instantly play the next episode 
-- [ ] Ignore the "Are you still watching?" message
+- [x] Ignore the "Are you still watching?" message
 - [ ] Allow the user to de.activate any of the features above 
 
 
