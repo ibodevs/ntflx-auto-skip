@@ -7,7 +7,7 @@ const DATA_NEXT_DRAINING = "[data-uia=next-episode-seamless-button-draining]";
 const DATA_STILL = "[data-uia=interrupt-autoplay-continue]";
 
 let ntflx_player, ntflx_player_obs, ntflx_video, ntflx_video_obs;
-let ntflx_obs_options = { childList: true };
+let ntflx_obs_options = { childList: true }; // thus, only working when user inactive (e.g. not using mouse)
 
 // Check if user chose to skip 
 async function optionChecked(data) {
