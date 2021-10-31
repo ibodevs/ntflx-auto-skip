@@ -1,10 +1,13 @@
 {
   "manifest_version": 2,
   "name": "NTFLX Auto-Skip",
-  "homepage_url": "https://github.com/tchichi/ntflx-auto-skip",
-  "version": "0.4",
-
   "description": "Provides some options when watching Netflix, such as skipping the intro or summary of an episode.",
+  "version": "0.5",
+  "homepage_url": "https://github.com/tchichi/ntflx-auto-skip",
+  "author": "Ilias Boutchichi",
+  "icons": {
+    "32": "assets/images/lotus_icon32.png"
+  },
 
   "content_scripts": [
     {
@@ -14,6 +17,12 @@
   ],
   
   "permissions": ["storage"],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "btchilias@gmail.com"
+    }
+  },
 
   "browser_action": {
     "default_icon": "assets/images/lotus_icon32.png",
