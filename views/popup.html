@@ -7,59 +7,73 @@
         <link href="../assets/css/popup.css" rel="stylesheet">
     </head>
     <body>
-        <!-- TITLE -->
+        <!-- LOGO -->
         <header class="center">
-            <img id="ntflx_icon" src="../assets/images/ntlfx_logo_1200.png" alt="NTFLX Auto-Skip logo">
+            <img id="ntflx_icon" src="../assets/images/ntlfx_logo_1200.png" alt="NTFLX Auto-Skip logo" draggable="false">
         </header>
         <!-- SKIP -->
         <main>
             <div class="ntflx_options_h">
-                <h3>SKIP</h3>
-            </div>
-            <div class="ntflx_container"> <!-- Container -->
-                <!-- ALL -->
-                <div class="ntflx_option_container">
-                    <div class="ntflx_options">All</div>
-                    <div>
-                        <input id="all" type="checkbox">
-                    </div>
+                <div id="ntflx_options_header">
+                    <label id="skip" for="all">SKIP</label>
+                    <span class="ntflx_info">
+                        &#8505;
+                        <span class="ntflx_info_msg">
+                            Choose what to skip automatically. You may need to refresh your Netflix player.
+                        </span>
+                    </span>
                 </div>
+                <!-- ALL -->
+                <div class="all_btn_container">
+                    <input id="all" type="checkbox">
+                    <label for="all" class="all_btn">All</label>
+                </div>
+            </div>
+            <div>
                 <!-- SUMMARIES -->
                 <div class="ntflx_option_container">
-                    <div class="ntflx_options">Summaries</div>
-                    <div>
-                        <input id="recap" type="checkbox" name="ntflx_options">
+                    <label for="recap" class="ntflx_options">Summaries</label>
+                    <div class="switch_container">
+                        <input id="recap" type="checkbox">
+                        <label for="recap" class="switch_bg"></label>
+                        <label for="recap" class="switch"></label>
                     </div>
                 </div>
                 <!-- INTRODUCTIONS -->
                 <div class="ntflx_option_container">
-                    <div class="ntflx_options">Introductions</div>
-                    <div>
-                        <input id="intro" type="checkbox" name="ntflx_options">
+                    <label for="intro" class="ntflx_options">Introductions</label>
+                    <div class="switch_container">
+                        <input id="intro" type="checkbox">
+                        <label for="intro" class="switch_bg"></label>
+                        <label for="intro" class="switch"></label>
                     </div>
                 </div>
                 <!-- NEXT EPISODE -->
                 <div class="ntflx_option_container">
-                    <div class="ntflx_options">To next episode</div>
-                    <div>
-                        <input id="next" type="checkbox" name="ntflx_options">
+                    <label for="next" class="ntflx_options">Next episode</label>
+                    <div class="switch_container">
+                        <input id="next" type="checkbox">
+                        <label for="next" class="switch_bg"></label>
+                        <label for="next" class="switch"></label>
                     </div>
                 </div>
                 <!-- ARE YOU STILL WATCHING? -->
                 <div class="ntflx_option_container">
-                    <div class="ntflx_options">Still there</div>
-                    <div>
-                        <input id="still" type="checkbox" name="ntflx_options">
+                    <label for="still" class="ntflx_options">Still watching?</label>
+                    <div class="switch_container">
+                        <input id="still" type="checkbox">
+                        <label for="still" class="switch_bg"></label>
+                        <label for="still" class="switch"></label>
                     </div>
                 </div>
             </div>
         </main>
         <!-- CREDITS -->
-        <footer class="center">
+        <footer class="ntflx_footer center">
             <div>
                 &copy; 2021 <a href="https://github.com/tchichi" target="_blank">Ilias Boutchichi</a>. All rights reserved.
             </div>
-            <div>Licensed under <a href="../LICENSE" target="_blank">MIT</a>.</div>
+            <div>Under <a href="../LICENSE" target="_blank">MIT License</a>.</div>
         </footer>
         <script src="../src/popup.js"></script>
     </body>
