@@ -1,26 +1,35 @@
+<div align="center">
+  <img alt="NTFLX Auto-Skip Logo" src="assets/images/ntlfx_logo_1200.png" width="500px">
+  <p><strong>a browser extension that provides some options to automatically skip parts of a Netflix show, such as intros and recaps</strong> :next_track_button:</p>
+</div>
+
+
 # NTFLX Auto-Skip
 
-
-NTFLX Auto-skip is a Firefox extension that offers some options when watching Netflix, such as skipping the intro or summary of an episode.
-
-
-## Goals
+Do you want to binge-watch sometimes or are you fed up with having to wake up and click the "skip" buttons when you are away from your computer? Fear not! NTFLX Auto-Skip is here to click these buttons for you. Now you can sit back and enjoy your favorite show in peace! 
 
 
-I set myself the following goals as a starting point before starting the process of understanding. Since I'm starting from scratch without really knowing what's going on under the hood, my first step will consist to understand how it works then to come up with a solution in order to achieve one of the goals below. Therefore, I may not be able to achieve some of these goals during the time I have set for this project. 
+## Features
 
-- [x] Skip the introductions 
 - [x] Skip the summaries 
+- [x] Skip the introductions 
 - [x] Instantly play the next episode 
-- [x] Ignore the "Are you still watching?" message
+- [x] Ignore the "Are you still watching?" message 
 - [x] Allow the user to de.activate any of the features above 
 
 
-## Questions
+## How to use?
+
+Once installed, all you have to do is to select what you want to skip automatically: 
+- **All**: toggle all other options below
+- **Summaries**: to skip the recaps
+- **Introductions**: to skip the intros
+- **Next episode**: to skip to the next episode without waiting for the 5 seconds timer
+- **Still watching?**: to ignore the dialog box asking if you are still watching 
+
+You may need to restart your Netflix page the first time you install the extension. After that, it remembers your choices on all your devices if you are logged into your browser. When watching a show, the extension lets you know when something is skipped. 
 
 
-My first reasonings are:
-- What framework and libraries does Netflix use? 
-  - At first glance, among those I know (by name), it looks like they are using React and Bootstrap (and sometimes jQuery). 
-- Does their app work differently depending on the country the user lives in or their language?
-  - I'll work from my place in Brussels (Belgium) and my Netflix account is in french. 
+## Cross-browser..ish?
+
+Exactly, it should work on popular browsers like Firefox (min 45.0), Edge and Chrome. To make it work in Chrome, you need to replace the main script and the manifest with their chrome versions. I tested in Firefox and Chrome, works perfectly. 
