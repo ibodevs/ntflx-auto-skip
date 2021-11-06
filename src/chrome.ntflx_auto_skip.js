@@ -7,7 +7,9 @@ const DATA_NEXT_DRAINING = "[data-uia=next-episode-seamless-button-draining]";
 const DATA_STILL = "[data-uia=interrupt-autoplay-continue]";
 
 let ntflx_player, ntflx_player_obs, ntflx_video, ntflx_video_obs;
-let ntflx_obs_options = { childList: true };
+let ntflx_obs_options = {
+    childList: true
+};
 let msg_container;
 
 function init_msg_container() {
@@ -19,8 +21,10 @@ function init_msg_container() {
 // Notifies the user when the app skips something
 function notify(msg) {
     msg_container.textContent = "Skipped " + msg;
-    msg_container.style.visibility = "visible"; 
-    setTimeout(() => {msg_container.style.visibility = "hidden";}, 2000);
+    msg_container.style.visibility = "visible";
+    setTimeout(() => {
+        msg_container.style.visibility = "hidden";
+    }, 2000);
 }
 
 // Checks if user chose to skip 
@@ -59,16 +63,17 @@ async function optionChecked(data) {
 }
 
 // Clicks a button if exists and user chose to skip 
-// As querySelector is normally O(n) and DOM changes dynamically with React, 
-// I prefer to check option then try to click
 // Notifies the user when a skip occures
 async function ntflx_item_click(data) {
     let res = await optionChecked(data);
     if (res) {
-        let ntflx_item = document.querySelector(data);
+        /* could ntflx_player.childNodes[1], 
+        but in case they change the structure, 
+        let's check everywhere inside player */
+        let ntflx_item = ntflx_player.querySelector(data);
         if (ntflx_item) {
             ntflx_item.click();
-            switch(data) {
+            switch (data) {
                 case DATA_RECAP:
                     notify("the recap");
                     break;
@@ -84,7 +89,7 @@ async function ntflx_item_click(data) {
                     break;
                 default:
             }
-        } 
+        }
     }
 }
 
@@ -102,15 +107,20 @@ function ntflx_skip() {
     // or class attr changes (usually passive, active or inactive)
     // No need to check each mutation if list. Try click once for all
     ntflx_player_obs = new MutationObserver(() => {
-        try_click(); 
+        if (ntflx_player.childElementCount > 1) {
+            try_click();
+        }
     });
     // with childList option, it works well only when user afk 
     // so observing class attr solves the issue of active users (because passive <-> in.active) 
-    ntflx_player_obs.observe(ntflx_player, { childList: true, attributeFilter: ["class"] });
+    ntflx_player_obs.observe(ntflx_player, {
+        childList: true,
+        attributeFilter: ["class"]
+    });
 }
 
 // The player usually takes some times to load, like 2 seconds on my end
-function loadplayer() { 
+function loadplayer() {
     ntflx_player = document.querySelector(DATA_PLAYER);
     if (ntflx_player) {
         ntflx_skip();
@@ -139,8 +149,8 @@ function loadvideo() {
                 firstload = false;
             }
         });
-        
-        ntflx_video_obs.observe(ntflx_video, ntflx_obs_options); 
+
+        ntflx_video_obs.observe(ntflx_video, ntflx_obs_options);
     } else {
         setTimeout(loadvideo, 100);
     }
