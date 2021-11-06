@@ -24,12 +24,13 @@ Once installed, all you have to do is to select what you want to skip automatica
 - **All**: toggle all other options below
 - **Summaries**: to skip the recaps
 - **Introductions**: to skip the intros
-- **Next episode**: to skip to the next episode without waiting for the 5 seconds timer
+- **Next episode**: to skip the 5 seconds timer before playing the next episode  
 - **Still watching?**: to ignore the dialog box asking if you are still watching 
 
-You may need to restart your Netflix page the first time you install the extension. After that, it remembers your choices on all your devices if you are logged into your browser. When watching a show, the extension lets you know when something is skipped. 
+You may need to restart your Netflix page the first time you install the extension. After that, it remembers your choices on all your devices if you are logged into your browser. 
+When watching a show, the extension lets you know when something is skipped. 
 
 
 ## Cross-browser..ish?
 
-Exactly, it should work on popular browsers like Firefox (min 45.0), Edge and Chrome. To make it work in Chrome, you need to replace the main script and the manifest with their chrome versions. I tested in Firefox and Chrome, works perfectly. 
+Exactly, it should work on popular browsers like Firefox (min 45.0), Edge and Chrome. To make it work in Chrome, you need to replace the scripts and the manifest with their chrome versions. I tested it in Firefox and Chrome, works perfectly. 
