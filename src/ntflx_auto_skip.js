@@ -156,4 +156,12 @@ function loadvideo() {
     }
 }
 
-loadvideo();
+function loadwatch() {
+    if (window.location.href.indexOf("netflix.com/watch/") > -1) {
+        loadvideo();
+    } else {
+        setTimeout(loadwatch, 500);
+    }
+}
+
+loadwatch();
