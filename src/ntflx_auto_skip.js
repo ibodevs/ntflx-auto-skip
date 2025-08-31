@@ -6,11 +6,35 @@ const DATA_NEXT = "[data-uia=next-episode-seamless-button]";
 const DATA_NEXT_DRAINING = "[data-uia=next-episode-seamless-button-draining]";
 const DATA_STILL = "[data-uia=interrupt-autoplay-continue]";
 
-let ntflx_player, ntflx_player_obs, ntflx_video, ntflx_video_obs;
-let ntflx_obs_options = {
-    childList: true
+const SELECTOR_CONFIG = {
+    [DATA_RECAP]: { key: "recap", msg: "the recap" },
+    [DATA_INTRO]: { key: "the intro".replace("the ", "intro") && "intro", msg: "the intro" }, 
+    [DATA_NEXT]: { key: "next", msg: "to the next episode" },
+    [DATA_NEXT_DRAINING]: { key: "next", msg: "to the next episode" },
+    [DATA_STILL]: { key: "still", msg: "the \"Are you still watching?\" message" }
 };
+
+let ntflx_player, ntflx_player_obs, ntflx_video, ntflx_video_obs;
+const ntflx_obs_options = { childList: true };
 let msg_container;
+let notifyTimeoutId = null; 
+
+// Unified storage getter (Firefox WebExtension API or Chrome fallback) returning a Promise
+function storageGet(keys) {
+    return new Promise(resolve => {
+        if (typeof browser !== "undefined" && browser.storage && browser.storage.sync) {
+            browser.storage.sync.get(keys).then(resolve).catch(() => resolve({}));
+        } else if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.sync) {
+            try {
+                chrome.storage.sync.get(keys, resolve);
+            } catch (_) {
+                resolve({});
+            }
+        } else {
+            resolve({});
+        }
+    });
+}
 
 function init_msg_container() {
     msg_container = document.createElement("p");
@@ -22,73 +46,35 @@ function init_msg_container() {
 function notify(msg) {
     msg_container.textContent = "Skipped " + msg;
     msg_container.style.visibility = "visible";
-    setTimeout(() => {
+    if (notifyTimeoutId) {
+        clearTimeout(notifyTimeoutId);
+    }
+    notifyTimeoutId = setTimeout(() => {
         msg_container.style.visibility = "hidden";
+        notifyTimeoutId = null;
     }, 2000);
 }
 
 // Checks if user chose to skip 
 async function optionChecked(data) {
-    let option;
-    switch (data) {
-        case DATA_RECAP:
-            await browser.storage.sync.get("recap")
-                .then(res => {
-                    option = res.recap || false;
-                });
-            break;
-        case DATA_INTRO:
-            await browser.storage.sync.get("intro")
-                .then(res => {
-                    option = res.intro || false;
-                });
-            break;
-        case DATA_NEXT:
-        case DATA_NEXT_DRAINING:
-            await browser.storage.sync.get("next")
-                .then(res => {
-                    option = res.next || false;
-                });
-            break;
-        case DATA_STILL:
-            await browser.storage.sync.get("still")
-                .then(res => {
-                    option = res.still || false;
-                });
-            break;
-        default:
-            option = false;
-    }
-    return option;
+    const cfg = SELECTOR_CONFIG[data];
+    if (!cfg) return false;
+    const res = await storageGet(cfg.key);
+    return Boolean(res[cfg.key]);
 }
 
-// Clicks a button if exists and user chose to skip 
-// Notifies the user when a skip occures
+// Clicks a button if present and user enabled that option
+// Notifies the user when a skip occurs
 async function ntflx_item_click(data) {
     let res = await optionChecked(data);
     if (res) {
-        /* could ntflx_player.childNodes[1], 
-        but in case they change the structure, 
-        let's check everywhere inside player */
+        /* Could use ntflx_player.childNodes[1], but in case they change the structure,
+           we query inside the whole player subtree. */
         let ntflx_item = ntflx_player.querySelector(data);
         if (ntflx_item) {
             ntflx_item.click();
-            switch (data) {
-                case DATA_RECAP:
-                    notify("the recap");
-                    break;
-                case DATA_INTRO:
-                    notify("the intro");
-                    break;
-                case DATA_NEXT:
-                case DATA_NEXT_DRAINING:
-                    notify("to the next episode");
-                    break;
-                case DATA_STILL:
-                    notify("the \"Are you still watching?\" message");
-                    break;
-                default:
-            }
+            const cfg = SELECTOR_CONFIG[data];
+            if (cfg) notify(cfg.msg);
         }
     }
 }
@@ -103,23 +89,16 @@ function try_click() {
 }
 
 function ntflx_skip() {
-    // Try to click a button if exists when a node is added to the player 
-    // or class attr changes (usually passive, active or inactive)
-    // No need to check each mutation if list. Try click once for all
+    // Try to click when nodes are added or class attribute changes (passive <-> active <-> inactive)
     ntflx_player_obs = new MutationObserver(() => {
         if (ntflx_player.childElementCount > 1) {
             try_click();
         }
     });
-    // with childList option, it works well only when user afk 
-    // so observing class attr solves the issue of active users (because passive <-> in.active) 
-    ntflx_player_obs.observe(ntflx_player, {
-        childList: true,
-        attributeFilter: ["class"]
-    });
+    ntflx_player_obs.observe(ntflx_player, { childList: true, attributeFilter: ["class"] });
 }
 
-// The player usually takes some times to load, like 2 seconds on my end
+// The player usually takes some time to load, like ±2 seconds in tests
 function loadplayer() {
     ntflx_player = document.querySelector(DATA_PLAYER);
     if (ntflx_player) {
@@ -144,7 +123,7 @@ function loadvideo() {
                 }
                 loadplayer();
             } else if (ntflx_player && firstload) {
-                // in case player already instantiated before setting a mutationObs on it
+                // In case player already instantiated before setting the observer on it
                 loadplayer();
                 firstload = false;
             }

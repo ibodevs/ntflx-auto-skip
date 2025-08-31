@@ -1,36 +1,104 @@
 <div align="center">
-  <img alt="NTFLX Auto-Skip Logo" src="assets/images/ntlfx_logo_1200.png" width="500px">
-  <p><strong>a browser extension that provides some options to automatically skip parts of a Netflix show, such as intros and recaps</strong> :next_track_button:</p>
+  <img alt="NTFLX Auto-Skip Logo" src="assets/images/ntlfx_logo_1200.png" width="420" />
+  <p><strong>Automatically skip recaps, intros, next‑episode countdown & "Are you still watching?" on Netflix</strong></p>
 </div>
-
 
 # NTFLX Auto-Skip
 
-Do you want to binge-watch sometimes or are you fed up with having to wake up and click the "skip" buttons when you are away from your computer? Fear not! NTFLX Auto-Skip is here to click these buttons for you. Now you can sit back and enjoy your favorite show in peace! 
+[![Firefox Add-on](https://img.shields.io/badge/Firefox-FF7139?logo=Firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/ntflx-auto-skip/)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Status: Stable](https://img.shields.io/badge/status-stable-blue)
 
+NTFLX Auto-Skip saves you from repeatedly clicking Netflix's skip buttons so you can focus on watching. It auto-clicks recap skip, intro skip, next‑episode (removing the 5s delay) and the "Are you still watching?" confirmation. A small on‑screen message lets you know what was skipped.
 
-## Features
+> Officially published only on Firefox. Chrome users can still install it manually (see below).
 
-- [x] Skip the summaries 
-- [x] Skip the introductions 
-- [x] Instantly play the next episode 
-- [x] Ignore the "Are you still watching?" message 
-- [x] Allow the user to de.activate any of the features above 
+## 1. Features
 
+- [x] Skip episode recaps
+- [x] Skip introductions
+- [x] Instantly jump to the next episode (bypass 5s timer)
+- [x] Dismiss the "Are you still watching?" dialog
+- [x] Granular enable/disable for each feature (plus a master toggle)
+- [x] Persists your choices across devices via browser sync storage
 
-## How to use?
+## 2. Installation
 
-Once installed, all you have to do is to select what you want to skip automatically: 
-- **All**: toggle all other options below
-- **Summaries**: to skip the recaps
-- **Introductions**: to skip the intros
-- **Next episode**: to skip the 5 seconds timer before playing the next episode  
-- **Still watching?**: to ignore the dialog box asking if you are still watching 
+### 2.1 Firefox 
 
-You may need to restart your Netflix page the first time you install the extension. After that, it remembers your choices on all your devices if you are logged into your browser. 
-When watching a show, the extension lets you know when something is skipped. 
+Just click the Firefox badge above (Add-ons Store). Once installed, open Netflix and configure the options in the extension popup.
 
+### 2.2 Chrome (Manual install)
 
-## Cross-browser..ish?
+The extension is not (yet) on the Chrome Web Store. You can load it unpacked:
+1. Download or clone this repository.
+2. In the project folder, rename (or copy) `chrome.manifest.json` to `manifest.json` (overwriting the existing WebExtension v2 `manifest.json`).
+3. Open Chrome and go to `chrome://extensions/`.
+4. Enable Developer Mode (top-right toggle).
+5. Click "Load unpacked" and select the project folder.
+6. The extension should appear; pin it if you want quick access.
 
-Exactly, it should work on popular browsers like Firefox (min 45.0), Edge and Chrome. To make it work in Chrome, you need to replace the scripts and the manifest with their chrome versions. I tested it in Firefox and Chrome, works perfectly. 
+To update later, pull the latest changes and click the reload icon on the extension card.
+
+## 3. Usage & Options
+
+Click the toolbar icon to open the popup and choose what to skip:
+
+- `All`: toggles every option at once
+- `Summaries`: skips recaps
+- `Introductions`: skips intros
+- `Next episode`: removes the countdown delay
+- `Still watching?`: auto-confirms the prompt
+
+You may need to refresh the Netflix tab right after first installation. A brief red message overlay (bottom-right) indicates what was automatically skipped.
+
+## 4. How It Works 
+
+The content script watches Netflix's player container using `MutationObserver`. When relevant skip / next / continue buttons appear, it checks your saved preferences (`browser.storage.sync`) and programmatically clicks them. A lightweight message element is injected only once and reused for notifications. No external network calls are made.
+
+## 5. Contributing
+
+Issues and pull requests are welcome:
+1. Open an issue describing a bug / enhancement.
+2. Fork the repo & create a feature branch.
+3. Keep changes small and focused.
+4. Submit a PR referencing the issue.
+
+Potential ideas:
+- Support for additional Netflix UI variations. 
+- Option to adjust notification style / duration. 
+- Local only basic counters, e.g. to show how many skips were performed. 
+
+## 6. Privacy 
+
+No personal data is collected, stored externally, or transmitted. The extension only uses `browser.storage.sync` for four boolean flags (recap, intro, next, still). All logic runs locally in the tab.
+
+## 7. Maintenance Status 
+
+This project originated several years ago and is considered stable. Active new feature development is minimal, but:
+- Bug reports will be looked at on a best-effort basis.
+- PRs that are small, clear, and tested are likely to be merged.
+
+## 8. License & Disclaimer 
+
+Released under the [MIT License](LICENSE).
+
+Not affiliated with, endorsed, or sponsored by Netflix. All trademarks are property of their respective owners.
+
+---
+
+### FAQ
+
+Q: It doesn't skip anything after install.  
+A: Refresh the Netflix tab so the content script loads after your preferences are saved.
+
+Q: Does it work with Profiles / multiple devices?  
+A: Yes, as long as browser sync is enabled, preferences follow you.
+
+Q: Will it appear on the Chrome Web Store?  
+A: Possibly in the future; manual install is currently the path.
+
+---
+
+Enjoy smoother binge-watching!
